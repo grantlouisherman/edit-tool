@@ -1,4 +1,11 @@
-const Select = (key, options, labelText) => {
+const { ipcRenderer } = require('electron')
+
+
+const submitButtonAction = (arguments) => {
+    ipcRenderer.send('submit', [...arguments])
+}
+
+const SelectComponent = (key, options, labelText) => {
     const createOptionForSelect = optionText => {
         const optionTag = document.createElement('option')
         optionTag.innerHTML = optionText
@@ -16,7 +23,7 @@ const Select = (key, options, labelText) => {
     return label
 }
 
-const Input = (key, labelText) => {
+const InputComponent = (key, labelText) => {
     const input = document.createElement('input')
     const label = document.createElement('label')
     const textForLabel = document.createTextNode(labelText)
@@ -26,9 +33,20 @@ const Input = (key, labelText) => {
 }
 
 
+const componentFactoryFunction = componentType => {
+    switch(componentType){
+        case "select":
+            return SelectComponent()
+        case "input":
+            return InputComponent()
+        default:
+            return InputComponent()
+
+    }
+}
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    let components = [Select(0, ['test', 'test','test'], 'label'), Input(1, 'input')]
+    let components = [SelectComponent(0, ['test', 'test','test'], 'label'), InputComponent(1, 'input')]
     const form = document.getElementById('form')
     components.forEach(component => {
         console.log(component)

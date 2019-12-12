@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain } = require('electron')
 
 function createWindow (){
     let window = new BrowserWindow({
@@ -13,3 +13,7 @@ function createWindow (){
 }
 
 app.on('ready', createWindow)
+
+ipcMain.on('submit', (event, arg)=> {
+    //Get the proper things
+})
